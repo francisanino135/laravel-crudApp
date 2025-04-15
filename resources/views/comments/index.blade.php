@@ -12,7 +12,7 @@
                     <div class="flex justify-between items-center me-[10px]">
                         @if ($comment->user)
                             @if ($comment->user->profile_picture)
-                                <img src="{{ asset('storage/' . $comment->user->profile_picture) }}"
+                                <img src="{{ url($comment->user->profile_picture) }}"
                                     alt="User Profile Picture"
                                     class="rounded-full w-[45px] h-[40px] border border-gray-200 shadow-sm">
                             @endif
@@ -24,7 +24,7 @@
                             </div>
                         @endif
                     </div>
-                    <div class="flex flex-col bg-gray-950 w-full rounded-full ps-[25px] py-[5px] gap-[5px]">
+                    <div class="flex flex-col bg-[#4B006E] w-full border border-white/30 rounded-full ps-[25px] py-[5px] gap-[5px]">
                         @if ($comment->user)
                             <span class="font-bold text-[14px]">{{ $comment->user->name }}</span>
                         @else
