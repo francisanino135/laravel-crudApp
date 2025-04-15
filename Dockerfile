@@ -18,7 +18,7 @@ WORKDIR /app
 COPY . /app
 
 # Copy .env (optional)
-COPY .env /app/.env
+# COPY .env /app/.env
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
