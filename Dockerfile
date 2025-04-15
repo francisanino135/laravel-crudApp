@@ -18,7 +18,7 @@ WORKDIR /app
 COPY . /app
 
 # Copy .env (optional)
-# COPY .env /app/.env
+COPY .env /app/.env
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
@@ -41,5 +41,9 @@ RUN chmod -R 775 storage bootstrap/cache
 EXPOSE 8000
 
 # Start Laravel dev server with dynamic port
-CMD php artisan serve --host=0.0.0.0 --port=${PORT}
+CMD php artisan config:cache && \
+    php artisan route:cache && \
+    php artisan view:cache && \
+    php artisan serve --host=0.0.0.0 --port=${PORT}
+
 
