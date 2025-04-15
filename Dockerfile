@@ -31,7 +31,7 @@ RUN composer install --no-dev --optimize-autoloader
 RUN php artisan storage:link
 
 # Expose port
-EXPOSE 8000
+EXPOSE 8080
 
 # Runtime commands (config caching & server start)
 CMD php artisan config:cache && \
