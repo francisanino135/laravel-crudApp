@@ -14,36 +14,24 @@ RUN apt-get update && apt-get install -y \
 # Set working directory
 WORKDIR /app
 
-# Copy entire Laravel project into the container
+# Copy entire Laravel project
 COPY . /app
 
-# Copy .env (optional)
-COPY .env /app/.env
+# Copy .env (Optional for local dev; comment out if using Railway ENV vars)
+# UNCOMMENT this line for local builds if you have a .env file
+# COPY .env /app/.env
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Prevent memory issues
-ENV COMPOSER_MEMORY_LIMIT=-1
-
 # Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader
 
-# Cache Laravel configs
-RUN php artisan config:cache \
- && php artisan route:cache \
- && php artisan view:cache
-
-# Fix permissions
-RUN chmod -R 775 storage bootstrap/cache
-
-# Expose dynamic port
+# Expose port
 EXPOSE 8000
 
-# Start Laravel dev server with dynamic port
+# Runtime commands (config caching & server start)
 CMD php artisan config:cache && \
     php artisan route:cache && \
     php artisan view:cache && \
-    php artisan serve --host=0.0.0.0 --port=${PORT}
-
-
+    php artisan serve --host=0.0.0.0 --port=${PORT:-8000}
