@@ -23,6 +23,9 @@ COPY .env /app/.env
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
+# Prevent memory issues
+ENV COMPOSER_MEMORY_LIMIT=-1
+
 # Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader
 
@@ -31,8 +34,12 @@ RUN php artisan config:cache \
  && php artisan route:cache \
  && php artisan view:cache
 
-# Expose port
+# Fix permissions
+RUN chmod -R 775 storage bootstrap/cache
+
+# Expose dynamic port
 EXPOSE 8000
 
-# Start Laravel dev server
-CMD php artisan serve --host=0.0.0.0 --port=8000
+# Start Laravel dev server with dynamic port
+CMD php artisan serve --host=0.0.0.0 --port=${PORT}
+
