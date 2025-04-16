@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libxml2-dev \
     zip unzip curl git npm nodejs \
-    netcat-openbsd \
+    # netcat-openbsd \
     && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 
 
@@ -23,9 +23,9 @@ COPY . /app
 # UNCOMMENT this line for local builds if you have a .env file
 # COPY .env /app/.env
 
-# Copy wait script & make it executable
-COPY wait-for-mysql.sh /usr/local/bin/wait-for-mysql.sh
-RUN chmod +x /usr/local/bin/wait-for-mysql.sh
+# # Copy wait script & make it executable
+# COPY wait-for-mysql.sh /usr/local/bin/wait-for-mysql.sh
+# RUN chmod +x /usr/local/bin/wait-for-mysql.sh
 
 
 # Install Composer
@@ -41,10 +41,8 @@ RUN php artisan storage:link
 EXPOSE 8080
 
 # Runtime commands (config caching & server start)
-CMD wait-for-mysql.sh && \
-    php artisan config:cache && \
+CMD php artisan config:cache && \
     php artisan route:cache && \
     php artisan view:cache && \
     php artisan migrate --force && \
-    php artisan serve --host=0.0.0.0 --port=${PORT} & \
-    sleep 5 && cat storage/logs/laravel.log
+    php artisan serve --host=0.0.0.0 --port=${PORT} 
