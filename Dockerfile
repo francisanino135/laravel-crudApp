@@ -17,8 +17,8 @@ WORKDIR /app
 # Copy entire Laravel project into the container
 COPY . /app
 
-# Copy .env (optional)
-COPY .env /app/.env
+# # Copy .env (optional)
+# COPY .env /app/.env
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
@@ -28,11 +28,13 @@ RUN composer install --no-dev --optimize-autoloader
 
 # Cache Laravel configs
 RUN php artisan config:cache \
- && php artisan route:cache \
- && php artisan view:cache
+    && php artisan route:cache \
+    && php artisan view:cache
 
 # Expose port
 EXPOSE 8000
 
 # Start Laravel dev server
-CMD php artisan serve --host=0.0.0.0 --port=$PORT
+CMD php artisan migrate --force && \
+    php artisan serve --host=0.0.0.0 --port=${PORT} & \
+    sleep 5 && cat storage/logs/laravel.log
