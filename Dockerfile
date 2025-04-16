@@ -9,24 +9,16 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libxml2-dev \
     zip unzip curl git npm nodejs \
-    netcat-openbsd \
     && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
-
 
 # Set working directory
 WORKDIR /app
 
-# Copy entire Laravel project
+# Copy entire Laravel project into the container
 COPY . /app
 
-# Copy .env (Optional for local dev; comment out if using Railway ENV vars)
-# UNCOMMENT this line for local builds if you have a .env file
-# COPY .env /app/.env
-
-# Copy wait script & make it executable
-COPY wait-for-mysql.sh /usr/local/bin/wait-for-mysql.sh
-RUN chmod +x /usr/local/bin/wait-for-mysql.sh
-
+# Copy .env (optional)
+COPY .env /app/.env
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
@@ -34,17 +26,13 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 # Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader
 
-# Create storage link
-RUN php artisan storage:link
+# Cache Laravel configs
+RUN php artisan config:cache \
+ && php artisan route:cache \
+ && php artisan view:cache
 
 # Expose port
-EXPOSE 8080
+EXPOSE 8000
 
-# Runtime commands (config caching & server start)
-CMD wait-for-mysql.sh && \
-    php artisan config:cache && \
-    php artisan route:cache && \
-    php artisan view:cache && \
-    php artisan migrate --force && \
-    php artisan serve --host=0.0.0.0 --port=${PORT} & \
-    sleep 5 && cat storage/logs/laravel.log
+# Start Laravel dev server
+CMD php artisan serve --host=0.0.0.0 --port=$PORT
