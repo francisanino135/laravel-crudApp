@@ -16,11 +16,9 @@ RUN apt-get update && apt-get install -y \
 # Set working directory
 WORKDIR /app
 
-# Copy entire Laravel project
-COPY . /app
 
-# Install Node dependencies
-RUN npm install && npm run build
+# Copy entire Laravel project (includes Vite assets)
+COPY . .
 
 
 # Copy .env (Optional for local dev; comment out if using Railway ENV vars)
@@ -37,6 +35,9 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 # Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader
+
+# Install Node and build assets
+RUN npm install && npm run build
 
 # Create storage link
 RUN php artisan storage:link
