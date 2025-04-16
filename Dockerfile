@@ -21,6 +21,11 @@ COPY . /app
 # UNCOMMENT this line for local builds if you have a .env file
 # COPY .env /app/.env
 
+# Copy wait script & make it executable
+COPY wait-for-mysql.sh /usr/local/bin/wait-for-mysql.sh
+RUN chmod +x /usr/local/bin/wait-for-mysql.sh
+
+
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
@@ -34,7 +39,8 @@ RUN php artisan storage:link
 EXPOSE 8080
 
 # Runtime commands (config caching & server start)
-CMD php artisan config:cache && \
+CMD wait-for-mysql.sh && \
+    php artisan config:cache && \
     php artisan route:cache && \
     php artisan view:cache && \
     php artisan migrate --force && \
