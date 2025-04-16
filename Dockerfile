@@ -19,6 +19,10 @@ WORKDIR /app
 # Copy entire Laravel project
 COPY . /app
 
+# Install Node dependencies
+RUN npm install && npm run build
+
+
 # Copy .env (Optional for local dev; comment out if using Railway ENV vars)
 # UNCOMMENT this line for local builds if you have a .env file
 # COPY .env /app/.env
