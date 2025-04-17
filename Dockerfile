@@ -46,7 +46,7 @@ RUN php artisan storage:link
 EXPOSE 8080
 
 # Runtime commands (config caching & server start)
-CMD CMD php artisan config:clear && \
+CMD php artisan config:clear && \
     php artisan config:cache && \
     php artisan route:cache && \
     php artisan view:cache && \
