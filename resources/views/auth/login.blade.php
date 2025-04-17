@@ -4,7 +4,8 @@
 
     <x-input-error :messages="$errors->all()" class="mt-[15px]" id="error-message" />
 
-    <form method="POST" action="{{ route('login') }}">
+    <form method="POST" action="{{ url('/login') }}">
+
         @csrf
 
         <div
@@ -34,7 +35,8 @@
                 class="btn w-full h-[45px] bg-white text-[16px] font-semibold text-black/80 rounded-[40px] shadow-[0_0_10px_rgba(0,0,0,0.2)] active:translate-y-[2px]">Login</button>
             <div class="login-register text-[14.5px] text-center mt-[20px] mx-0 mb-[15px]">
                 <p>Don't have an account?
-                    <a href="register" class="register-link font-medium inline-block hover:underline active:translate-y-[2px]">
+                    <a href="register"
+                        class="register-link font-medium inline-block hover:underline active:translate-y-[2px]">
                         Register
                     </a>
                 </p>

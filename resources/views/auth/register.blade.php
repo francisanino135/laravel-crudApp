@@ -1,5 +1,5 @@
 <x-guest-layout>
-    <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data" x-data="fileUploadHandlerRegister"
+    <form method="POST" action="{{ url('register') }}" enctype="multipart/form-data" x-data="fileUploadHandlerRegister"
         x-init="$watch('files', value => console.log(value))"> <!-- Add enctype here -->
         @csrf
 
