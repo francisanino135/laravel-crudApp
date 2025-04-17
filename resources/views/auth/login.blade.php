@@ -4,7 +4,7 @@
 
     <x-input-error :messages="$errors->all()" class="mt-[15px]" id="error-message" />
 
-    <form method="POST" action="{{ route('/login') }}">
+    <form method="POST" action="{{ route('login') }}">
 
         @csrf
 
