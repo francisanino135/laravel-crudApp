@@ -36,9 +36,6 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 # Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader
 
-# Install Node and build assets
-RUN npm install && npm run build
-
 # Create storage link
 RUN php artisan storage:link
 
