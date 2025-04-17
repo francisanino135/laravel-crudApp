@@ -1,0 +1,17 @@
+{
+  "resources/css/app.css": {
+    "file": "assets/app-2wyJZuGn.css",
+    "src": "resources/css/app.css",
+    "isEntry": true
+  },
+  "resources/css/starrySky.jpg": {
+    "file": "assets/starrySky-CdlGsveo.jpg",
+    "src": "resources/css/starrySky.jpg"
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-CCC41JrX.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true
+  }
+}
